@@ -1,42 +1,49 @@
 <?php
+var_dump($_POST);
+if (isset($_POST['submit'])) {
 
-try {
-    $servername = "localhost";
-    $username = "root";
-    $password = "";
-    $dbname = "pdo_toets_herkansing";
+    // Create connection
+    try {
+        $servername = "localhost";
+        $username = "root";
+        $password = "";
+        $dbname = "pdo_toets_herkansing";
 
-    $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
-    //Set the PDO error mode to exception
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $conn = new PDO ("mysql:host=$servername;dbname=$dbname", $username, $password);
 
-    //Prepare sql and bind parameters
-    $stmt = $conn->prepare("INSERT INTO user (id, burritoformaat, saus, bonen, rijst)
-    VALUES (:id, :burritoformaat, :saus, :bonen, :rijst)");
-    $stmt->bindParam(':id', $id);
-    $stmt->bindParam(':$burritoformaat', $burritoformaat);
-    $stmt->bindParam(':saus', $saus);
-    $stmt->bindParam(':bonen', $bonen);
-    $stmt->bindParam(':rijst', $rijst);
+        //set the PDO eeror mode to excipotien
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        // Check connection
 
-    //Insert a row
-    $id = NULL;
-    $burritoformaat = $_POST['burritoformaat'];
-    $saus = $_POST['saus'];
-    $bonen = $_POST['bonen'];
-    $rijst = $_POST['rijst'];
+        // prepare and bind
+        $stmt = $conn->prepare("INSERT INTO burrito (id, burritoformaat, saus, bonen, rijst)
+        VALUES (:id, :burritoformaat, :saus, :bonen, :rijst)");
+        $stmt->bindParam(':id', $id);
+        $stmt->bindParam(':burritoformaat', $burritoformaat);
+        $stmt->bindParam(':saus', $saus);
+        $stmt->bindParam(':bonen', $bonen);
+        $stmt->bindParam(':rijst', $rijst);
 
-    // var_dump($stmt->queryString);
+        var_dump($_POST);
 
-    $stmt->execute();
+        //insert a row
+        $id = Null;
+        $burritoformaat = $_POST["burritoformaat"];
+        $saus = $_POST["saus"];
+        $bonen = $_POST["bonen"];
+        $rijst = $_POST["rijst"];
 
-    echo "New records created successfully.";
-    header("Refresh:3; ./read.php");
-} catch (PDOException $e) {
-    echo $e->getMessage();exit();
-    header("Location: ./index.php");
+
+        //var dump
+        $stmt->execute();
+
+        echo "Het is gelukt!";
+        header("Refresh:3; ./reade.php");
+    } catch (PDOException $e) {
+        echo $e->getMessage();
+        header("Location: ./reade.php");
+    }
+
+    $conn = null;
 }
-
-$conn = null;
-
 ?>
